@@ -13,3 +13,9 @@ $ sudo apt-get install npm
 /hello_world $ nodejs helloWorld.js 
 Server started on localhost:3000; press Ctrl-C to terminate....
 ```
+
+#### ch03: Saving Time with Express
+```
+$ npm install --save express
+$ npm install --save express-handlebars
+```
