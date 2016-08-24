@@ -48,4 +48,8 @@ $ mocha -u tdd -R spec qa/tests-crosspage.js 2>/dev/null
 
 # Logic testing
 $ mocha -u tdd -R spec qa/tests-unit.js
+
+# Linting
+$ sudo npm install -g jshint
+$ jshint meadowlark.js
 ```
