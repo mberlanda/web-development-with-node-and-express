@@ -45,4 +45,7 @@ $ cp node_modules/chai/chai.js public/vendor
 $ npm install --save-dev zombie@3.1.1
 $ sudo npm install -g mocha
 $ mocha -u tdd -R spec qa/tests-crosspage.js 2>/dev/null
+
+# Logic testing
+$ mocha -u tdd -R spec qa/tests-unit.js
 ```
