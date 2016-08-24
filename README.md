@@ -8,7 +8,7 @@ This repo is presenting the examples of the book [Web Development with Node and 
 
 #### ch02: Getting Started with Node
 ```bash
-$ sudo apt-get install nodejs
+sudo apt-get install nodejs
 $ sudo apt-get install npm
 /hello_world $ nodejs helloWorld.js 
 Server started on localhost:3000; press Ctrl-C to terminate....
@@ -23,3 +23,18 @@ $ npm install --save express-handlebars
 #### ch04: Tidying Up
 - created package.json
 - moved fortuneCookies into a lib module
+
+#### ch05: Quality Assurance
+- Page testing
+- Cross-page testing
+- Logic testing
+- Linting
+- Link checking
+```bash
+# Page testing
+$ npm install --save-dev mocha
+$ mkdir public/vendor
+$ cp node_modules/mocha/mocha.js public/vendor
+$ cp node_modules/mocha/mocha.css public/vendor
+$ npm install --save-dev chai
+$ cp node_modules/chai/chai.js public/vendor

@@ -11,24 +11,25 @@ var handlebars = require('express-handlebars')
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+app.use(function(req, res, next){
+  res.locals.showTests = app.get('env') !== 'production' &&
+    req.query.test === '1';
+  next();
+});
+
+// routes go here....
 app.set('port', process.env.PORT || 3000);
 
 app.get('/', function(req, res){
-  // res.type('text/plain');
-  // res.send('Meadowlark Travel');
   res.render('home');
 });
 
 app.get('/about', function(req, res){
-  // res.type('text/plain');
-  // res.send('About Meadowlark Travel');
-  res.render('about', { fortune: fortune.getFortune() });
+  res.render('about', { fortune: fortune.getFortune(), pageTestScript: '/qa/tests-about.js' });
 });
 
 // custom 404 page
 app.use(function(req, res){
-  // res.type('text/plain');
-  // res.send('404 - Not Found');
   res.status(404);
   res.render('404');
 });
@@ -36,8 +37,6 @@ app.use(function(req, res){
 // custom 500 page
 app.use(function(err, req, res, next){
   console.error(err.stack);
-  // res.type('text/plain');
-  // res.send('500 - Server Error');
   res.status(500);
   res.render('500');
 });
