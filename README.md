@@ -19,3 +19,7 @@ Server started on localhost:3000; press Ctrl-C to terminate....
 $ npm install --save express
 $ npm install --save express-handlebars
 ```
+
+#### ch04: Tidying Up
+- created package.json
+- moved fortuneCookies into a lib module
