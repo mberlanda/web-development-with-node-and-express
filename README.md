@@ -31,7 +31,7 @@ $ npm install --save express-handlebars
 - Cross-page testing
 - Logic testing
 - Linting
-- Link checking
+- [Link checking](https://wummel.github.io/linkchecker/)
 ```bash
 # Page testing
 $ npm install --save-dev mocha
@@ -52,4 +52,18 @@ $ mocha -u tdd -R spec qa/tests-unit.js
 # Linting
 $ sudo npm install -g jshint
 $ jshint meadowlark.js
+```
+
+Automating with Grunt:
+```bash
+$ sudo npm install -g grunt-cli
+$ npm install --save-dev grunt
+# grunt plugins
+$ npm install --save-dev grunt-cafe-mocha
+npm ERR! peerinvalid The package grunt@1.0.1 does not satisfy its siblings' peerDependencies requirements!
+npm ERR! peerinvalid Peer grunt-cafe-mocha@0.1.13 wants grunt@~0.4.1
+npm ERR! peerinvalid Peer grunt-contrib-jshint@1.0.0 wants grunt@>=0.4.0
+
+$ npm install --save-dev grunt-contrib-jshint
+$ npm install --save-dev grunt-exec
 ```
