@@ -360,10 +360,14 @@ app.get('/foo', function(req, res){
 </form>
 ```
 - Form Handling with Express / Handling AJAX Forms (see newsletter example)
-```
+```bash
 npm install --save body-parser
 ```
 - File Uploads
-```
+```bash
 npm install --save formidable
+```
+- jQuery File Upload
+```bash
+npm install --save jquery-file-upload-middleware
 ```
