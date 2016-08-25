@@ -268,6 +268,7 @@ api.del('/api/tour/:id', function(req, res){
 
 #### ch07: Templating with Handlebars
 [Jade](http://jade-lang.com/)
+
 Handlebars:
 - comments
 ```html
@@ -340,3 +341,6 @@ app.get('/foo', function(req, res){
 });
 ```
 - partials (see weather partial example)
+- sections (see jquery-test example)
+
+- Client-Side Handlebars
