@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
+
+// libs
 var fortune = require('./lib/fortune.js');
+var weatherData = require('./lib/weather-data.js');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -17,6 +20,13 @@ app.use(function(req, res, next){
   next();
 });
 
+// partials
+app.use(function(req, res, next){
+  if(!res.locals.partials) res.locals.partials = {};
+  res.locals.partials.weatherContext = weatherData.getWeatherData();
+  next();
+});
+
 // routes go here....
 app.set('port', process.env.PORT || 3000);
 
@@ -27,7 +37,6 @@ app.get('/', function(req, res){
 app.get('/about', function(req, res){
   res.render('about', { fortune: fortune.getFortune(), pageTestScript: '/qa/tests-about.js' });
 });
-
 
 app.get('/tours/hood-river', function(req, res){
   res.render('tours/hood-river');

@@ -265,3 +265,78 @@ api.del('/api/tour/:id', function(req, res){
   }
 });
 ```
+
+#### ch07: Templating with Handlebars
+[Jade](http://jade-lang.com/)
+Handlebars:
+- comments
+```html
+{{! super-secret comment }}
+<!-- not-so-secret comment -->
+```
+- blocks
+```
+{
+  currency: {
+    name: 'United States dollars',
+    abbrev: 'USD',
+  },
+  tours: [
+    { name: 'Hood River', price: '$99.95' },
+    { name: 'Oregon Coast', price, '$159.95' },
+  ],
+  specialsUrl: '/january-specials',
+  currencies: [ 'USD', 'GBP', 'BTC' ],
+}
+```
+```html
+<ul>
+  {{#each tours}}
+    {{! I'm in a new block...and the context has changed }}
+    <li>
+      {{name}} - {{price}}
+        {{#if ../currencies}}
+        ({{../../currency.abbrev}})
+      {{/if}}
+    </li>
+  {{/each}}
+</ul>
+{{#unless currencies}}
+  <p>All prices in {{currency.name}}.</p>
+{{/unless}}
+{{#if specialsUrl}}
+  {{! I'm in a new block...but the context hasn't changed (sortof) }}
+  <p>Check out our <a href="{{specialsUrl}}">specials!</a></p>
+{{else}}
+  <p>Please check back often for specials.</p>
+{{/if}}
+<p>
+  {{#each currencies}}
+    <a href="#" class="currency">{{.}}</a>
+  {{else}}
+    Unfortunately, we currently only accept {{currency.name}}.
+  {{/each}}
+</p>
+```
+- Server-Side Templates
+```javascript
+// npm install --save express-handlebars
+var handlebars = require('express-handlebars')
+  .create({ defaultLayout: 'main' });
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+
+// layout on
+app.get('/foo', function(req, res){
+  res.render('foo');
+});
+// layout off
+app.get('/foo', function(req, res){
+  res.render('foo', { layout: null });
+});
+// custom layout
+app.get('/foo', function(req, res){
+  res.render('foo', { layout: 'custom' });
+});
+```
+- partials (see weather partial example)
