@@ -412,3 +412,20 @@ var colorScheme = req.session.colorScheme || 'dark';
 req.session.userName = null; // this sets 'userName' to null, but doesn't remove it
 delete req.session.colorScheme; // this removes 'colorScheme'
 ```
+
+#### ch10: Middleware
+- Intro (see ./middleware-examples)
+
+Common Middleware:
+```
+npm install --save connect
+npm install --save body-parser
+npm install --save cookie-parser
+npm install --save express-session
+npm install --save csurf
+npm install --save errorhandler
+npm install --save static-favicon
+npm install --save morgan
+npm install --save response-time
+npm install --save vhost
+```
