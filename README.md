@@ -361,13 +361,54 @@ app.get('/foo', function(req, res){
 ```
 - Form Handling with Express / Handling AJAX Forms (see newsletter example)
 ```bash
-npm install --save body-parser
+$ npm install --save body-parser
 ```
 - File Uploads
 ```bash
-npm install --save formidable
+$ npm install --save formidable
 ```
 - jQuery File Upload
 ```bash
-npm install --save jquery-file-upload-middleware
+$ npm install --save jquery-file-upload-middleware
+```
+---
+#### ch09: Cookies and Sessions
+```bash
+$ npm install --save cookie-parser
+```
+```javascript
+app.use(require('cookie-parser')(credentials.cookieSecret));
+// where you have access to a res object
+  res.cookie('monster', 'nom nom');
+  res.cookie('signed_monster', 'nom nom', { signed: true });
+
+  var monster = req.cookies.monster;
+  var signedMonster = req.signedCookies.signed_monster;
+
+  res.clearCookie('monster');
+```
+Options for cookies:
+- domain
+- path
+- maxAge
+- secure
+- httpOnly
+- signed
+[cookie-session middleware](https://www.npmjs.org/package/cookie-session)
+```bash
+$ npm install --save express-session
+```
+express-session middleware configuration options:
+- resave
+- saveUnitialized
+- secret
+- key
+- store
+- cookie
+```javascript
+// Using Sessions
+req.session.userName = 'Anonymous';
+var colorScheme = req.session.colorScheme || 'dark';
+req.session.userName = null; // this sets 'userName' to null, but doesn't remove it
+delete req.session.colorScheme; // this removes 'colorScheme'
 ```

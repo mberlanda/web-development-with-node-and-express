@@ -21,6 +21,9 @@
       </div>
     </div>
   </form>
+  <div class="col-sm-offset-2 col-sm-4">
+    <span id="newsletterFlash" class="btn btn-default">Flash</button>
+  </div>
 </div>
 
 {{#section 'jquery'}}
@@ -28,7 +31,7 @@
     $(document).ready(function(){
       $('.newsletterForm').on('submit', function(evt){
         evt.preventDefault();
-        var action = $(this).attr('action');
+        var action = $(this).attr('action');       
         var $container = $(this).closest('.formContainer');
         $.ajax({
           url: action,
@@ -46,6 +49,16 @@
           }
         });
       });
+      $('#newsletterFlash').click(function(evt){
+        $.ajax({
+          url: '/newsletter',
+          type: 'POST',
+          data: $('.newsletterForm').serialize(),
+          success: function(data, textStatus, jqXHR){
+            if (typeof data.redirect == 'string') window.location = data.redirect;
+          }
+        })
+      })
     });
   </script>
 {{/section}}
