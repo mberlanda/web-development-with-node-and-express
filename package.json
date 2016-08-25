@@ -2,7 +2,8 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.12.3",
-    "express-handlebars": "^2.0.1"
+    "express-handlebars": "^2.0.1",
+    "formidable": "^1.0.17"
   },
   "devDependencies": {
     "chai": "~3.5.0",

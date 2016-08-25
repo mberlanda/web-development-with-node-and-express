@@ -359,7 +359,11 @@ app.get('/foo', function(req, res){
   </div>
 </form>
 ```
-- Form Handling with Express (see newsletter example)
+- Form Handling with Express / Handling AJAX Forms (see newsletter example)
 ```
 npm install --save body-parser
+```
+- File Uploads
+```
+npm install --save formidable
 ```

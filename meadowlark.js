@@ -1,11 +1,11 @@
 var express = require('express');
 var app = express();
 
+var formidable = require('formidable');
+
 // libs
 var fortune = require('./lib/fortune.js');
 var weatherData = require('./lib/weather-data.js');
-
-app.use(express.static(__dirname + '/public'));
 
 // set up handlebars view engine
 var handlebars = require('express-handlebars').create({
@@ -22,6 +22,9 @@ var handlebars = require('express-handlebars').create({
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+app.use(express.static(__dirname + '/public'));
+
+// tests
 app.use(function(req, res, next){
   res.locals.showTests = app.get('env') !== 'production' &&
     req.query.test === '1';
@@ -81,16 +84,21 @@ app.get('/data/nursery-rhyme', function(req, res){
   })
 });
 
+app.get('/thank-you', function(req, res){
+  res.render('thank-you');
+})
+
+app.get('/error', function(req, res){
+  res.render('error');
+})
+
+
 // Form Handling with Express
 app.get('/newsletter', function(req, res){
   // we will learn about CSRF later...for now, we just
   // provide a dummy value
   res.render('newsletter', { csrf: 'CSRF token goes here' });
 });
-
-app.get('/thank-you', function(req, res){
-  res.render('thank-you');
-})
 
 /*
 app.post('/process', function(req, res){
@@ -109,6 +117,26 @@ app.post('/process', function(req, res){
     // if there were an error, we would redirect to an error page
     res.redirect(303, '/thank-you');
   }
+});
+
+// File Upload
+app.get('/contest/vacation-photo',function(req,res){
+  var now = new Date();
+  res.render('contest/vacation-photo',{
+    year: now.getFullYear(),month: now.getMonth()
+  });
+});
+
+app.post('/contest/vacation-photo/:year/:month', function(req, res){
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files){
+    if(err) return res.redirect(303, '/error');
+    console.log('received fields:');
+    console.log(fields);
+    console.log('received files:');
+    console.log(files);
+    res.redirect(303, '/thank-you');
+  });
 });
 
 // custom 404 page
