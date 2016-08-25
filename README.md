@@ -67,3 +67,201 @@ npm ERR! peerinvalid Peer grunt-contrib-jshint@1.0.0 wants grunt@>=0.4.0
 $ npm install --save-dev grunt-contrib-jshint
 $ npm install --save-dev grunt-exec
 ```
+
+---
+
+#### ch06: The Request and Response Object
+```javascript
+var req = 'The Request Object';
+
+req.params; // return []
+req.param(name); // recommended to avoid
+req.query; // querystring parameters
+req.body;
+req.route;
+req.cookies; // req.signedCookies;
+req.headers;
+req.accepts([types]); // such as application/json for API
+req.ip;
+req.path;
+req.host;
+req.xhr; // true if request orginated from AJAX
+req.protocol; // http - https
+req.secure; // true if https
+req.url // req.originalUrl
+req.acceptedLanguages;
+
+var res = 'The Response Object';
+
+res.status(code); // sets status code
+res.set(name, value); // response header
+res.cookie(name, value, [options]); // res.clearCookie(name, [options])
+res.redirect([status], url);
+res.send(body); // res.send(status, body); first res.set('Content-Type', 'text/plain')
+res.json(json); // res.json(status, json)
+res.jsonp(json); // res.jsonp(status, json)
+res.type(type); // res.type('txt')
+res.format(object); // res.format({'text/plain': 'hi there', 'text/html': '<b>hi there</b>'})
+res.attachment([filename]); // res.download(path, [filename], [callback])
+res.sendFile(path, [options], [callback]);
+res.links(links);
+res.locals;
+res.render(view, [locals], callback);
+```
+
+Rendering Content:
+```javascript
+// basic usage
+  app.get('/about', function(req, res){
+  res.render('about');
+});
+// response codes other than 200
+app.get('/error', function(req, res){
+  res.status(500);
+  res.render('error');
+});
+// or on one line...
+app.get('/error', function(req, res){
+  res.status(500).render('error');
+});
+
+// passing a context to a view, including querystring, cookie, and session values
+app.get('/greeting', function(req, res){
+  res.render('about', {
+    message: 'welcome',
+    style: req.query.style,
+    userid: req.cookie.userid,
+    username: req.session.username,
+  });
+});
+
+// the following layout doesn't have a layout file, so views/no-layout.handlebars
+// must include all necessary HTML
+app.get('/no-layout', function(req, res){
+  res.render('no-layout', { layout: null });
+});
+
+// the layout file views/layouts/custom.handlebars will be used
+app.get('/custom-layout', function(req, res){
+  res.render('custom-layout', { layout: 'custom' });
+});
+
+// rendering plaintext output
+app.get('/test', function(req, res){
+  res.type('text/plain');
+  res.send('this is a test');
+});
+
+// this should appear AFTER all of your routes
+// note that even if you don't need the "next"
+// function, it must be included for Express
+// to recognize this as an error handler
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.status(500).render('error');
+});
+
+// this should appear AFTER all of your routes
+app.use(function(req, res){
+  res.status(404).render('not-found');
+});
+```
+
+Processing Forms:
+```javascript
+// body-parser middleware must be linked in
+app.post('/process-contact', function(req, res){
+  console.log('Received contact from ' + req.body.name +
+  ' <' + req.body.email + '>');
+  // save to database....
+  res.redirect(303, '/thank-you');
+});
+
+// body-parser middleware must be linked in (more robust)
+app.post('/process-contact', function(req, res){
+  console.log('Received contact from ' + req.body.name +
+    ' <' + req.body.email + '>');
+  try {
+    // save to database....
+    return res.xhr ?
+    res.render({ success: true }) :
+    res.redirect(303, '/thank-you');
+  } catch(ex) {
+    return res.xhr ?
+      res.json({ error: 'Database error.' }) :
+      res.redirect(303, '/database-error');
+  }
+});
+```
+
+Providing an API:
+```javascript
+var tours = [
+  { id: 0, name: 'Hood River', price: 99.99 },
+  { id: 1, name: 'Oregon Coast', price: 149.95 },
+];
+
+// simple GET endpoint returning only JSON
+app.get('/api/tours', function(req, res){
+  res.json(tours);
+});
+
+// GET endpoint that returns JSON, XML, or text
+app.get('/api/tours', function(req, res){
+  
+  var toursXml = '<?xml version="1.0"?><tours>' +
+    products.map(function(p){
+      return '<tour price="' + p.price +
+      '" id="' + p.id + '">' + p.name + '</tour>';
+    }).join('') + '</tours>';
+
+  var toursText = tours.map(function(p){
+    return p.id + ': ' + p.name + ' (' + p.price + ')';
+  }).join('\n');
+  
+  res.format({
+    'application/json': function(){
+      res.json(tours);
+    },
+
+    'application/xml': function(){
+      res.type('application/xml');
+      res.send(toursXml);
+    },
+
+    'text/xml': function(){
+      res.type('text/xml');
+      res.send(toursXml);
+    },
+    'text/plain': function(){
+      res.type('text/plain');
+      res.send(toursXml);
+    }
+  });
+});
+
+// API that updates a tour and returns JSON; params are passed using querystring
+app.put('/api/tour/:id', function(req, res){
+  var p = tours.filter(function(p){ return p.id === req.params.id })[0];
+  if( p ) {
+    if( req.query.name ) p.name = req.query.name;
+    if( req.query.price ) p.price = req.query.price;
+    res.json({success: true});
+  } else {
+    res.json({error: 'No such tour exists.'});
+  }
+});
+
+// API that deletes a product
+api.del('/api/tour/:id', function(req, res){
+  var i;
+  for( var i=tours.length-1; i>=0; i-- )
+    if( tours[i].id == req.params.id ) break;
+  if( i>=0 ) {
+    tours.splice(i, 1);
+    res.json({success: true});
+  } else {
+    res.json({error: 'No such tour exists.'});
+  }
+});
+```
