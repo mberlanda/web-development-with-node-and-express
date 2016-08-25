@@ -8,8 +8,16 @@ var weatherData = require('./lib/weather-data.js');
 app.use(express.static(__dirname + '/public'));
 
 // set up handlebars view engine
-var handlebars = require('express-handlebars')
-  .create({ defaultLayout:'main' });
+var handlebars = require('express-handlebars').create({
+  defaultLayout:'main',
+  helpers: {
+    section: function(name, options){
+      if (!this._sections) this._sections = {};
+      this._sections[name] = options.fn(this);
+      return null;
+    }
+  }
+});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -51,6 +59,10 @@ app.get('/headers', function(req,res){
   var s = '';
   for(var name in req.headers) s += name + ': ' + req.headers[name] + '\n';
   res.send(s);
+});
+
+app.get('/jquery-test', function(req, res){
+  res.render('jquery-test');
 });
 
 // custom 404 page
