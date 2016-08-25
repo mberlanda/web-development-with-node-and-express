@@ -69,7 +69,6 @@ $ npm install --save-dev grunt-exec
 ```
 
 ---
-
 #### ch06: The Request and Response Object
 ```javascript
 var req = 'The Request Object';
@@ -266,6 +265,7 @@ api.del('/api/tour/:id', function(req, res){
 });
 ```
 
+---
 #### ch07: Templating with Handlebars
 [Jade](http://jade-lang.com/)
 
@@ -342,5 +342,24 @@ app.get('/foo', function(req, res){
 ```
 - partials (see weather partial example)
 - sections (see jquery-test example)
+- Client-Side Handlebars(see nursery-rhyme example)
 
-- Client-Side Handlebars
+---
+#### ch08: Form Handling
+- HTML Forms
+```html
+<form action="/process" method="POST">
+<input type="hidden" name="hush" val="hidden, but not secret!">
+  <div>
+    <label for="fieldColor">Your favorite color: </label>
+    <input type="text" id="fieldColor" name="color">
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+```
+- Form Handling with Express (see newsletter example)
+```
+npm install --save body-parser
+```
