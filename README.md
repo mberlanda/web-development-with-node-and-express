@@ -537,5 +537,12 @@ try {
 // morgan (npm install --save morgan) for development
 // express-logger (npm install --save express-logger) for production
 ```
-- scaling out (see meadowlark_cluster.js)
+- scaling out with app clusters (see meadowlark_cluster.js)
 - handling uncaught exceptions (using [domains](https://engineering.gosquared.com/error-handling-using-domains-node-js) see meadowlark_domain.js)
+- scaling out with multiple servers
+- monitoring your websit with third-party uptime monitors
+- stress testing 
+```
+$ npm install --save loadtest
+$ mocha -u tdd -R spec qa/tests-stress.js
+```
