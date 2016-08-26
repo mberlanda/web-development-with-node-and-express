@@ -5,6 +5,7 @@ app.use(express.static(__dirname + '/public'));
 
 var formidable = require('formidable');
 var jqupload = require('jquery-file-upload-middleware');
+var nodeMailer = require('nodemailer');
 
 // libs
 var fortune = require('./lib/fortune.js');
@@ -25,6 +26,15 @@ var handlebars = require('express-handlebars').create({
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
+
+// mailer setup
+var mailTransport = nodemailer.createTransport('SMTP',{
+  service: 'Gmail',
+  auth: {
+    user: credentials.gmail.user,
+    pass: credentials.gmail.password,
+  }
+});
 
 // before you start setting and accessing cookies in your app, you need to include
 app.use(require('cookie-parser')(credentials.cookieSecret));
@@ -227,6 +237,38 @@ app.use('/upload', function(req, res, next){
       return '/uploads/' + now;
     },
   })(req, res, next);
+});
+
+// Sending HTML Email
+app.post('/cart/checkout', function(req, res){
+  var cart = req.session.cart;
+  if(!cart) next(new Error('Cart does not exist.'));
+  var name = req.body.name || '', email = req.body.email || '';
+  // input validation
+  if(!email.match(VALID_EMAIL_REGEX))
+    return res.next(new Error('Invalid email address.'));
+  // assign a random cart ID; normally we would use a database ID here
+  cart.number = Math.random().toString().replace(/^0\.0*/, '');
+  cart.billing = {
+    name: name,
+    email: email,
+  };
+  res.render('email/cart-thank-you',
+    { layout: null, cart: cart }, function(err,html){
+      if( err ) console.log('error in email template');
+      mailTransport.sendMail({
+        from: '"Meadowlark Travel": info@meadowlarktravel.com',
+        to: cart.billing.email,
+        subject: 'Thank You for Book your Trip with Meadowlark',
+        html: html,
+        generateTextFromHtml: true
+      }, function(err){
+        if(err) console.error('Unable to send confirmation: '
+          + err.stack);
+      });
+    }
+  );
+  res.render('cart-thank-you', { cart: cart });
 });
 
 // custom 404 page

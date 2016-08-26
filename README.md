@@ -429,3 +429,81 @@ npm install --save morgan
 npm install --save response-time
 npm install --save vhost
 ```
+
+#### ch11: Sending Email
+```
+npm install --save nodemailer
+```
+```javascript
+var nodeMailer = require('nodemailer');
+
+// setup the mailer
+var mailTransport = nodemailer.createTransport('SMTP',{
+  host: 'smtp.meadowlarktravel.com',
+  secureConnection: true,
+  port: 465, // use SSL
+  auth: {
+    user: credentials.meadowlarkSmtp.user,
+    pass: credentials.meadowlarkSmtp.password,
+  }
+});
+
+// sending mail
+mailTransport.sendMail({
+  from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
+  to: 'joecustomer@gmail.com',
+  subject: 'Your Meadowlark Travel Tour',
+  text: 'Thank you for booking your trip with Meadowlark Travel. ' +
+    'We look forward to your visit!',
+}, function(err){
+    if(err) console.error( 'Unable to send email: ' + error );
+});
+
+// sending mail to multiple recipients
+
+mailTransport.sendMail({
+  from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
+  to: 'joe@gmail.com, "Jane Customer" <jane@yahoo.com>, ' +
+  'fred@hotmail.com',
+  subject: 'Your Meadowlark Travel Tour',
+  text: 'Thank you for booking your trip with Meadowlark Travel.' +
+    'We look forward to your visit!',
+}, function(err){
+  if(err) console.error( 'Unable to send email: ' + error );
+});
+
+// largeRecipientList is an array of email addresses
+var recipientLimit = 100;
+for(var i=0; i<largeRecipientList.length/recipientLimit; i++){
+  mailTransport.sendMail({
+    from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
+    to: largeRecipientList
+     .slice(i*recipientLimit, i*(recipientLimit+1)).join(','),
+    subject: 'Special price on Hood River travel package!',
+    text: 'Book your trip to scenic Hood River now!',
+  }, function(err){
+    if(err) console.error( 'Unable to send email: ' + error );
+  });
+}
+
+// sending HTML email
+mailTransport.sendMail({
+  from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
+  to: 'joecustomer@gmail.com, "Jane Customer" ' +
+    '<janecustomer@gyahoo.com>, frecsutomer@hotmail.com',
+  subject: 'Your Meadowlark Travel Tour',
+  html: '<h1>Meadowlark Travel</h1>\n<p>Thanks for book your trip with ' +
+    'Meadowlark Travel. <b>We look forward to your visit!</b>',
+  // text: 'Thank you for booking your trip with Meadowlark Travel. ' +
+  //  'We look forward to your visit!',
+  // instead of text:, simply
+  generateTextFromHtml: true,
+}, function(err){
+  if(err) console.error( 'Unable to send email: ' + error );
+});
+
+// images in HTML email
+<img src="//meadowlarktravel.com/email/logo.png" alt="Meadowlark Travel">
+```
+
+Using Views to Send HTML Email
