@@ -6,7 +6,32 @@ app.use(express.static(__dirname + '/public'));
 var formidable = require('formidable');
 var jqupload = require('jquery-file-upload-middleware');
 var nodeMailer = require('nodemailer');
+var mongoose = require('mongoose');
 
+// libs
+var fortune = require('./lib/fortune.js');
+var weatherData = require('./lib/weather-data.js');
+var credentials = require('./credentials.js');
+
+// models
+var Vacation = require('./models/vacation.js');
+
+// MongoDB Connection
+var opts = {
+  server: {
+    socketOptions: { keepAlive: 1 }
+  }
+};
+switch(app.get('env')){
+  case 'development':
+    mongoose.connect(credentials.mongo.development.connectionString, opts);
+    break;
+  case 'production':
+    mongoose.connect(credentials.mongo.production.connectionString, opts);
+    break;
+  default:
+    throw new Error('Unknown execution environment: ' + app.get('env'));
+}
 // filesystem persistence
 var fs = require('fs');
 
@@ -18,11 +43,6 @@ fs.existsSync(vacationPhotoDir) || fs.mkdirSync(vacationPhotoDir);
 function saveContestEntry(contestName, email, year, month, photoPath){
   // TODO...this will come later
 }
-
-// libs
-var fortune = require('./lib/fortune.js');
-var weatherData = require('./lib/weather-data.js');
-var credentials = require('./credentials.js');
 
 // set up handlebars view engine
 var handlebars = require('express-handlebars').create({
