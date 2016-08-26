@@ -1,4 +1,9 @@
 # ignore packages installed by npm
 node_modules
+
 # ignore local log files
 log
+
+# ignore data folder files
+data
+# public/uploads

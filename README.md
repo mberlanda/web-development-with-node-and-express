@@ -546,3 +546,6 @@ try {
 $ npm install --save loadtest
 $ mocha -u tdd -R spec qa/tests-stress.js
 ```
+
+#### ch13: Persistence
+- Filesystem Persistence
