@@ -567,8 +567,9 @@ blobService.putBlockBlobFromFile('uploads', filename, __dirname + '/tmp/' + file
 ```
 - Database Persistence (NoSQL)
 ..* [MongoDB: The Definitive Guide](http://usuaris.tinet.cat/bertolin/pdfs/mongodb_%20the%20definitive%20guide%20-%20kristina%20chodorow_1401.pdf) by Kristina Chodorow
-..* [https://www.mongodb.com/](https://www.mongodb.com/)
+..* [https://www.mongodb.com/](https://www.mongodb.com/): `npm install --save mongodb`
 ..* 'sudo apt-get install mongodb'
 ..* [Mongoose](http://mongoosejs.com/): `npm install --save mongoose`
 ..* [RoboMongo](https://robomongo.org/)
 ..* [Connecting and Working with MongoDB with Node & Express](https://www.terlici.com/2015/04/03/mongodb-node-express.html)
+..* `npm install --save session-mongoose` (not supported in the latest version of express and connect, see [repo](https://github.com/donpark/session-mongoose) )
