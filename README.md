@@ -528,3 +528,6 @@ try {
   // ... display error message to user
 }
 ```
+
+#### ch12: Production Concerns
+- execution environments `$ NODE_ENV=production node meadowlark.js`
