@@ -7,6 +7,7 @@ var formidable = require('formidable');
 var jqupload = require('jquery-file-upload-middleware');
 var nodeMailer = require('nodemailer');
 var mongoose = require('mongoose');
+var vhost = require('vhost');
 
 // libs
 var fortune = require('./lib/fortune.js');
@@ -175,6 +176,21 @@ var VALID_EMAIL_REGEX = new RegExp('^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@' +
 
 // form handling with express
 app.use(require('body-parser').urlencoded({ extended: true }));
+
+
+// subdomains
+// create "admin" subdomain...this should appear
+// before all your other routes
+var admin = express.Router();
+app.use(vhost('admin.*', admin));
+
+admin.get('/', function(req, res){
+  res.render('jquery-test');
+});
+
+admin.get('/users', function(req, res){
+  res.render('about');
+});
 
 // routes go here....
 app.set('port', process.env.PORT || 3000);

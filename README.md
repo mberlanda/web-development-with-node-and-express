@@ -557,20 +557,36 @@ aws.putObject({
   ACL: 'private',
   Bucket: 'uploads',
   Key: filename,
-  Body: fs.readFileSync(__dirname + \'/tmp/\' + filename)
+  Body: fs.readFileSync(__dirname + '/tmp/' + filename)
 });
 
 // Azure sample
 var filename = 'customerUpload.jpg';
 var blobService = azure.createBlobService();
-blobService.putBlockBlobFromFile('uploads', filename, __dirname + \'/tmp/\' + filename);
+blobService.putBlockBlobFromFile('uploads', filename, __dirname + '/tmp/' + filename);
 ```
 - Database Persistence (NoSQL)
-..* [MongoDB: The Definitive Guide](http://usuaris.tinet.cat/bertolin/pdfs/mongodb_%20the%20definitive%20guide%20-%20kristina%20chodorow_1401.pdf) by Kristina Chodorow
-..* [https://www.mongodb.com/](https://www.mongodb.com/): `npm install --save mongodb`
-..* 'sudo apt-get install mongodb'
-..* [Mongoose](http://mongoosejs.com/): `npm install --save mongoose`
-..* [RoboMongo](https://robomongo.org/)
-..* [Connecting and Working with MongoDB with Node & Express](https://www.terlici.com/2015/04/03/mongodb-node-express.html)
-..* `npm install --save session-mongoose` (not supported in the latest version of express and connect, see [repo](https://github.com/donpark/session-mongoose) )
+... [MongoDB: The Definitive Guide](http://usuaris.tinet.cat/bertolin/pdfs/mongodb_%20the%20definitive%20guide%20-%20kristina%20chodorow_1401.pdf) by Kristina Chodorow
+... [https://www.mongodb.com/](https://www.mongodb.com/): `npm install --save mongodb`
+... 'sudo apt-get install mongodb'
+... [Mongoose](http://mongoosejs.com/): `npm install --save mongoose`
+... [RoboMongo](https://robomongo.org/)
+... [Connecting and Working with MongoDB with Node & Express](https://www.terlici.com/2015/04/03/mongodb-node-express.html)
+... `npm install --save session-mongoose` (not supported in the latest version of express and connect, see [repo](https://github.com/donpark/session-mongoose) )
 
+#### ch14: Routing
+- Subdomains
+```javascript
+// npm install --save vhost
+// create "admin" subdomain...this should appear
+// before all your other routes
+var admin = express.Router();
+app.use(vhost('admin.*', admin));
+// create admin routes; these can be defined anywhere
+admin.get('/', function(req, res){
+  res.render('admin/home');
+});
+admin.get('/users', function(req, res){
+  res.render('admin/users');
+});
+```
