@@ -531,3 +531,9 @@ try {
 
 #### ch12: Production Concerns
 - execution environments `$ NODE_ENV=production node meadowlark.js`
+- environment-specific configuration
+```
+// logging:
+// morgan (npm install --save morgan) for development
+// express-logger (npm install --save express-logger) for production
+```
