@@ -590,3 +590,7 @@ admin.get('/users', function(req, res){
   res.render('admin/users');
 });
 ```
+- Routes are Middleware
+- Route Paths and Regular Expressions
+- Route Parameters
+- Declaring Routes in a Module
