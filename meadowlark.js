@@ -4,7 +4,6 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 
-var nodeMailer = require('nodemailer');
 var mongoose = require('mongoose');
 var vhost = require('vhost');
 
@@ -84,18 +83,6 @@ Vacation.find(function(err, vacations){
   }).save();
 });
 
-// filesystem persistence
-var fs = require('fs');
-
-var dataDir = __dirname + '/data';
-var vacationPhotoDir = dataDir + '/vacation-photo';
-fs.existsSync(dataDir) || fs.mkdirSync(dataDir);
-fs.existsSync(vacationPhotoDir) || fs.mkdirSync(vacationPhotoDir);
-
-function saveContestEntry(contestName, email, year, month, photoPath){
-  // TODO...this will come later
-}
-
 // set up handlebars view engine
 var handlebars = require('express-handlebars').create({
   defaultLayout:'main',
@@ -107,18 +94,8 @@ var handlebars = require('express-handlebars').create({
     }
   }
 });
-
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-
-// mailer setup
-var mailTransport = nodeMailer.createTransport('SMTP',{
-  service: 'Gmail',
-  auth: {
-    user: credentials.gmail.user,
-    pass: credentials.gmail.password,
-  }
-});
 
 // before you start setting and accessing cookies in your app, you need to include
 app.use(require('cookie-parser')(credentials.cookieSecret));
@@ -165,16 +142,8 @@ app.use(function(req, res, next){
   next();
 });
 
-// email validation
-// slightly modified version of the official W3C HTML5 email regex:
-// https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
-var VALID_EMAIL_REGEX = new RegExp('^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@' +
-'[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?' +
-'(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$');
-
 // form handling with express
 app.use(require('body-parser').urlencoded({ extended: true }));
-
 
 // subdomains
 // create "admin" subdomain...this should appear
@@ -183,10 +152,8 @@ var admin = express.Router();
 app.use(vhost('admin.*', admin));
 require('./routes-admin.js')(admin);
 
-
 // routes go here....
 require('./routes.js')(app);
-
 
 // take the server down
 app.get('/epic-fail', function(req, res){

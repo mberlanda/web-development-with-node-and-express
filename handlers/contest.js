@@ -1,5 +1,17 @@
 var formidable = require('formidable');
 
+// filesystem persistence
+var fs = require('fs');
+
+var dataDir = __dirname + '/../data';
+var vacationPhotoDir = dataDir + '/vacation-photo';
+fs.existsSync(dataDir) || fs.mkdirSync(dataDir);
+fs.existsSync(vacationPhotoDir) || fs.mkdirSync(vacationPhotoDir);
+
+function saveContestEntry(contestName, email, year, month, photoPath){
+  // TODO...this will come later
+}
+
 // File Upload
 exports.vacationPhoto = {
   get: function(req,res){
@@ -32,7 +44,7 @@ exports.vacationPhoto = {
         intro: 'Good luck!',
         message: 'You have been entered into the contest.'
       };
-      return res.redirect(303, '/contest/vacation-photo/entries')
+      return res.redirect(303, '/contest/vacation-photo')
     });
   },
 }

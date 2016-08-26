@@ -1,5 +1,25 @@
-// Sending HTML Email
+var nodeMailer = require('nodemailer');
+var credentials = require('../credentials.js');
 
+// mailer setup
+var mailTransport = nodeMailer.createTransport('SMTP',{
+  service: 'Gmail',
+  auth: {
+    user: credentials.gmail.user,
+    pass: credentials.gmail.password,
+  }
+});
+
+// email validation
+// slightly modified version of the official W3C HTML5 email regex:
+// https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
+var VALID_EMAIL_REGEX = new RegExp('^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@' +
+'[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?' +
+'(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$');
+
+
+
+// Sending HTML Email
 exports.checkout = function(req, res){
   var cart = req.session.cart;
   if(!cart) next(new Error('Cart does not exist.'));
