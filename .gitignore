@@ -6,4 +6,4 @@ log
 
 # ignore data folder files
 data
-# public/uploads
+public/uploads

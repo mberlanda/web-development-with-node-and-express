@@ -549,3 +549,19 @@ $ mocha -u tdd -R spec qa/tests-stress.js
 
 #### ch13: Persistence
 - Filesystem Persistence
+- Cloud Persistence (see [AWS](https://aws.amazon.com/sdk-for-node-js/) or [Azure](https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-how-to-use-blob-storage/) documentation)
+```javascript
+// AWS sample
+var filename = 'customerUpload.jpg';
+aws.putObject({
+  ACL: 'private',
+  Bucket: 'uploads',
+  Key: filename,
+  Body: fs.readFileSync(__dirname + '/tmp/ + filename)
+});
+
+// Azure sample
+var filename = 'customerUpload.jpg';
+var blobService = azure.createBlobService();
+blobService.putBlockBlobFromFile('uploads', filename, __dirname + '/tmp/' + filename);
+```
