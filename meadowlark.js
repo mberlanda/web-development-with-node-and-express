@@ -28,7 +28,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
 // mailer setup
-var mailTransport = nodemailer.createTransport('SMTP',{
+var mailTransport = nodeMailer.createTransport('SMTP',{
   service: 'Gmail',
   auth: {
     user: credentials.gmail.user,
@@ -270,6 +270,20 @@ app.post('/cart/checkout', function(req, res){
   );
   res.render('cart-thank-you', { cart: cart });
 });
+
+app.get('/email/cart-thank-you', function(req, res){
+  var cart = req.session.cart;
+  if(!cart){
+    var cart = {
+      number: Math.random().toString().replace(/^0\.0*/, ''),
+      billing: {
+        name: 'Test User',
+        email: 'user@example.com',
+      }
+    };
+  }
+  res.render('email/cart-thank-you', { layout: null, cart: cart })
+})
 
 // custom 404 page
 app.use(function(req, res){

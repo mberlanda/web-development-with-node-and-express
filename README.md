@@ -505,5 +505,26 @@ mailTransport.sendMail({
 // images in HTML email
 <img src="//meadowlarktravel.com/email/logo.png" alt="Meadowlark Travel">
 ```
-
 Using Views to Send HTML Email
+```javascript
+// see view/email/cart-thank-you.handlebars
+// see lib/email.js
+
+var emailService = require('./lib/email.js')(credentials);
+emailService.send('joecustomer@gmail.com', 'Hood River tours on sale today!',
+  'Get \'em while they\'re hot!');
+
+// email as a site monitoring tool
+
+if(err){
+  email.sendError('the widget broke down!', __filename);
+  // ... display error message to user
+}
+// or
+try {
+  // do something iffy here....
+} catch(ex) {
+  email.sendError('the widget broke down!', __filename, ex);
+  // ... display error message to user
+}
+```
