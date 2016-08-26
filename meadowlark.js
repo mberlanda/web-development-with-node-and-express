@@ -299,6 +299,13 @@ app.get('/email/cart-thank-you', function(req, res){
   res.render('email/cart-thank-you', { layout: null, cart: cart })
 })
 
+// take the server down
+app.get('/epic-fail', function(req, res){
+  process.nextTick(function(){
+    throw new Error('Kaboom!');
+  });
+});
+
 // custom 404 page
 app.use(function(req, res){
   res.status(404);

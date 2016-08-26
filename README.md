@@ -537,4 +537,5 @@ try {
 // morgan (npm install --save morgan) for development
 // express-logger (npm install --save express-logger) for production
 ```
-- scaling out
+- scaling out (see meadowlark_cluster.js)
+- handling uncaught exceptions (using [domains](https://engineering.gosquared.com/error-handling-using-domains-node-js) see meadowlark_domain.js)
