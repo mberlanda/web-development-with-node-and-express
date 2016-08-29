@@ -635,4 +635,18 @@ app.use(function(req,res,next){
 // npm install --save cors
 // Test the API with restler
 // npm install --save-dev restler
+// Using a REST Plugin
+// npm install --save connect-rest
+
+var rest = require('connect-rest');
+// website routes go here
+// define API routes here with rest.VERB....
+// API configuration
+var apiOptions = {
+  context: '/api',
+  domain: require('domain').create(),
+};
+// link API into pipeline
+app.use(rest.rester(apiOptions));
+// 404 handler goes here
 ```
