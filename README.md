@@ -15,6 +15,8 @@ This repo is presenting the examples of the book [Web Development with Node and 
 - [ch11: Sending Email](#ch11-sending-email)
 - [ch12: Production Concerns](#ch12-production-concerns)
 - [ch13: Persistence](#ch13-persistence)
+- [ch14: Routing](#ch14-routing)
+- [ch15: Rest APIs and JSON](#ch15-rest-apis-and-json)
 
 ---
 #### ch01: Introducing Express
@@ -625,4 +627,10 @@ app.use(function(req,res,next){
   // no view found; pass on to 404 handler
   next();
 });
+```
+
+#### ch15: Rest APIs and JSON
+```javascript
+// cross-origin resource sharing may expose the application to attacks
+// npm install --save cors
 ```
