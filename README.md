@@ -633,4 +633,6 @@ app.use(function(req,res,next){
 ```javascript
 // cross-origin resource sharing may expose the application to attacks
 // npm install --save cors
+// Test the API with restler
+// npm install --save-dev restler
 ```

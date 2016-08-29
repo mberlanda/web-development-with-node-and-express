@@ -154,7 +154,7 @@ require('./routes-admin.js')(admin);
 
 // routes go here....
 require('./routes.js')(app);
-
+require('./routes-api.js')(app);
 // take the server down
 app.get('/epic-fail', function(req, res){
   process.nextTick(function(){
